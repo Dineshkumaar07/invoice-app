@@ -1,12 +1,16 @@
-public class BasicService implements Service{
-    int INR;
-    float discount;
-    BasicService(int INR, float discount){
-        this.INR = INR;
-        this.discount = discount;
-    }
+public class BasicService implements Service {
     @Override
-    public void doService(Vehicle v) {
-        System.out.println("Basic Service Done");
+    public String getServiceName() {
+        return "Basic Service";
+    }
+
+    @Override
+    public double getCost() {
+        return 3599;
+    }
+
+    @Override
+    public double getDiscountPercentage() {
+        return 3;
     }
 }

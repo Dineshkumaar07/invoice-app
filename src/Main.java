@@ -5,6 +5,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         InputHandler inputHandler = new InputHandler(scanner);
         Customer customer = inputHandler.createCustomer();
-        customer.displayVehicleDetails();
+        customer.generateInvoices();
     }
 }
