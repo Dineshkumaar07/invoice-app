@@ -1,5 +1,10 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CSVInputAdapter implements DataInput {
     private String filePath;
@@ -9,52 +14,37 @@ public class CSVInputAdapter implements DataInput {
     }
 
     @Override
-    public Customer getCustomerFromData() {
-        Customer customer = null;
+    public List<Customer> getCustomersFromData() {
+        Map<String, Customer> customerMap = new HashMap<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            String currentCustomerName = "";
-            String currentContactNumber = "";
-
+            String line = br.readLine();
             while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                System.out.println("Parsed row: " + Arrays.toString(data));
-
-                if (data.length < 5) {
-                    System.err.println("Invalid row: " + line);
-                    continue;
-                }
-
-                String customerName = data[0].trim();
-                String contactNumber = data[1].trim();
-                String oem = data[2].trim();
-                String vin = data[3].trim();
-                String[] serviceNames = data[4].trim().split("\\|");
-
-                if (!customerName.equals(currentCustomerName)) {
-                    customer = new Customer(customerName, contactNumber);
-                    currentCustomerName = customerName;
-                    currentContactNumber = contactNumber;
-                }
+                String[] parts = line.split(",");
+                String customerName = parts[0].trim();
+                String contactNumber = parts[1].trim();
+                String oem = parts[2].trim();
+                String vin = parts[3].trim();
+                String[] services = parts[4].split(";");
 
                 Vehicle vehicle = new Vehicle(oem, vin);
-                customer.addVehicle(vehicle);
-
-                for (String serviceName : serviceNames) {
-                    try {
-                        Service service = ServiceFactory.getServiceByName(serviceName.trim());
-                        vehicle.addService(service);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
+                for (String serviceName : services) {
+                    vehicle.addService(ServiceFactory.getServiceByName(serviceName.trim()));
                 }
+
+                String customerKey = customerName + "|" + contactNumber;
+                if (!customerMap.containsKey(customerKey)) {
+                    Customer customer = new Customer(customerName, contactNumber);
+                    customerMap.put(customerKey, customer);
+                }
+
+                customerMap.get(customerKey).addVehicle(vehicle);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading CSV file", e);
         }
 
-        return customer;
+        return new ArrayList<>(customerMap.values());
     }
-
-
 }

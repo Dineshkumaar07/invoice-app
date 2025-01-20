@@ -10,9 +10,9 @@ public class ServiceFactory {
         serviceIdMap.put(2, new OilClean());
         serviceIdMap.put(3, new PartsChange());
 
-        serviceNameMap.put("Basic", new BasicService());
-        serviceNameMap.put("OilClean", new OilClean());
-        serviceNameMap.put("PartsChange", new PartsChange());
+        serviceNameMap.put("basic", new BasicService());
+        serviceNameMap.put("oilclean", new OilClean());
+        serviceNameMap.put("partschange", new PartsChange());
     }
 
     public static Service getServiceById(int serviceId) {
@@ -24,8 +24,8 @@ public class ServiceFactory {
     }
 
     public static Service getServiceByName(String serviceName) {
-        if (serviceNameMap.containsKey(serviceName)) {
-            return serviceNameMap.get(serviceName);
+        if (serviceNameMap.containsKey(serviceName.toLowerCase().trim())) {
+            return serviceNameMap.get(serviceName.toLowerCase().trim());
         } else {
             throw new IllegalArgumentException("Invalid service name: " + serviceName);
         }
