@@ -30,7 +30,7 @@ public class Main {
         }
 
         for (Customer customer : customers) {
-            customer.generateInvoices(customer.getName());
+            customer.generateInvoices();
         }
     }
 }

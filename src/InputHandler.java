@@ -10,6 +10,7 @@ public class InputHandler {
     public Customer createCustomer() {
         System.out.print("Name: ");
         String name = scanner.next();
+        scanner.nextLine();
         System.out.print("Contact number: ");
         String contactNumber = scanner.next();
 

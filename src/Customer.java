@@ -28,12 +28,12 @@ public class Customer {
         return vehicles;
     }
 
-    public void generateInvoices(String customerName) {
-        System.out.println("Invoices for Customer: " + name);
+    public void generateInvoices() {
+        System.out.println("Invoices for Customer: " + this.name);
         for (Vehicle vehicle : vehicles) {
             Invoice invoice = new Invoice(vehicle);
             invoice.generateInvoice();
-            invoice.writeInvoiceToCSV("resources/"+customerName+" "+vehicle.getOem()+".csv");
+            invoice.writeInvoiceToCSV("resources/"+this.name+" "+vehicle.getOem()+".csv");
         }
     }
 }
