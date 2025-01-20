@@ -1,3 +1,9 @@
 public interface Service {
-    void doService(Vehicle v);
+    String getServiceName();
+    double getCost();
+    double getDiscountPercentage();
+
+    default double getDiscountedCost() {
+        return getCost() - (getCost() * getDiscountPercentage() / 100);
+    }
 }

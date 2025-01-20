@@ -1,12 +1,16 @@
 public class PartsChange implements Service {
-    int INR;
-    float discount;
-    PartsChange(int INR, float discount){
-        this.INR = INR;
-        this.discount = discount;
-    }
     @Override
-    public void doService(Vehicle v) {
-        System.out.println("Parts Changed");
+    public String getServiceName() {
+        return "Parts Charge";
+    }
+
+    @Override
+    public double getCost() {
+        return 32499;
+    }
+
+    @Override
+    public double getDiscountPercentage() {
+        return 5;
     }
 }

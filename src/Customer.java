@@ -1,25 +1,39 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Customer {
     private String name;
     private String contactNumber;
-    private ArrayList<Vehicle> vehicles;
+    private List<Vehicle> vehicles;
 
-    Customer(String name, String contactNumber){
-
+    public Customer(String name, String contactNumber) {
         this.name = name;
         this.contactNumber = contactNumber;
         this.vehicles = new ArrayList<>();
-
     }
 
-    public void addVehicles(Vehicle vehicle){
+    public String getName() {
+        return name;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void addVehicle(Vehicle vehicle) {
         this.vehicles.add(vehicle);
     }
 
-    public void displayVehicleDetails() {
-        for (Vehicle v : vehicles) {
-            System.out.println(v.oem);
-        }
+    public List<Vehicle> getVehicles() {
+        return vehicles;
     }
 
+    public void generateInvoices() {
+        System.out.println("Invoices for Customer: " + name);
+        for (Vehicle vehicle : vehicles) {
+            Invoice invoice = new Invoice(vehicle);
+            invoice.generateInvoice();
+            invoice.writeInvoiceToCSV("resources/"+vehicle.getOem()+".csv");
+        }
+    }
 }
